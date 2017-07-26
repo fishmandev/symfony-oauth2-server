@@ -8,15 +8,21 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        main:
-            anonymous: ~
-            # activate different ways to authenticate
+        oauth_token:
+            pattern:    ^/oauth/v2/token
+            security:   false
 
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
+        oauth_authorize:
+            pattern:    ^/(oauth/v2/auth|login_check)
+            form_login:
+                provider: fos_userbundle
+            security:   true
 
-            # https://symfony.com/doc/current/security/form_login_setup.html
-            #form_login: ~
+        api:
+            pattern:    ^/api
+            fos_oauth:  true
+            stateless:  true
+            anonymous:  false # can be omitted as its default value
 
     # https://symfony.com/doc/master/bundles/FOSUserBundle/index.html#step-4-configure-your-application-s-security-yml
     encoders:
